@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "660977612451",
+    "project_id": "foodie-bc",
+    "storage_bucket": "foodie-bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660977612451:android:42da1c237ac5892f2cb116",
+        "android_client_info": {
+          "package_name": "com.christian.foodie_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDb5NL0Bu-FTZsx9EFsmxScZtGqED6NvWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660977612451:android:fd8b8f69fb18525a2cb116",
+        "android_client_info": {
+          "package_name": "com.example.dwitter_clone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDb5NL0Bu-FTZsx9EFsmxScZtGqED6NvWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660977612451:android:01743aec4064e0d42cb116",
+        "android_client_info": {
+          "package_name": "com.example.flight_booking_system"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDb5NL0Bu-FTZsx9EFsmxScZtGqED6NvWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
