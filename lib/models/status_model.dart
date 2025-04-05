@@ -1,19 +1,37 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class StatusModel {
-  String uid;
-  String content;
-  String? imageUrl;
+class Story {
+  final String userId;
+  final String imageUrl;
+  final String videoUrl;
+  final DateTime createdAt;
+  final String mediaType; // 'image' or 'video'
 
-  // String? videoUrl;
-  final DateTime timestamp;
+  Story({
+    required this.userId,
+    required this.imageUrl,
+    required this.videoUrl,
+    required this.createdAt,
+    required this.mediaType,
+  });
 
-  StatusModel(
-    this.uid,
-    this.content,
-    this.imageUrl,
-    this.timestamp,
-  );
+  factory Story.fromJson(Map<String, dynamic> json) {
+    return Story(
+      userId: json['userId'],
+      imageUrl: json['imageUrl'],
+      videoUrl: json['videoUrl'],
+      createdAt: (json['createdAt'] as Timestamp).toDate(),
+      mediaType: json['mediaType'],
+    );
+  }
 
-// ... (fromMap, toMap, constructor)
+  Map<String, dynamic> toJson() {
+    return {
+      'userId': userId,
+      'imageUrl': imageUrl,
+      'videoUrl': videoUrl,
+      'createdAt': Timestamp.fromDate(createdAt),
+      'mediaType': mediaType,
+    };
+  }
 }

@@ -5,6 +5,7 @@ import 'package:dwitter_clone/features/screens/profile/profile_screen.dart';
 import 'package:dwitter_clone/features/screens/register/register_screen.dart';
 import 'package:dwitter_clone/firebase_options.dart';
 import 'package:dwitter_clone/providers/auth_provider.dart';
+import 'package:dwitter_clone/providers/stories_provider.dart';
 import 'package:dwitter_clone/theme/theme_data.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,10 +17,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => AuthProviders(),
-      child: const MyApp(),
-    ),
+    const MyApp(),
   );
 }
 
@@ -28,19 +26,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(),
-      darkTheme: darkTheme,
-      themeMode: ThemeMode.system,
-      title: 'Flutter Demo',
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const AuthState(),
-        '/register': (context) => RegisterScreen(),
-        '/login': (context) => LoginScreen(),
-        '/home': (context) => HomePage(),
-        '/profile': (context) => ProfileScreen(),
-      },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProviders()),
+        ChangeNotifierProvider(create: (_) => StoryProvider()), // Add StoriesProvider
+      ],
+      child: MaterialApp(
+        theme: ThemeData(),
+        darkTheme: darkTheme,
+        themeMode: ThemeMode.system,
+        title: 'Flutter Demo',
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const AuthState(),
+          '/register': (context) => RegisterScreen(),
+          '/login': (context) => LoginScreen(),
+          '/home': (context) => HomePage(),
+          '/profile': (context) => ProfileScreen(),
+        },
+      ),
     );
   }
 }

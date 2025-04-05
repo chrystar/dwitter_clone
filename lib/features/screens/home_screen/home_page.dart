@@ -1,6 +1,9 @@
 import 'package:dwitter_clone/features/widgets/Ddrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:stories_for_flutter/stories_for_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,7 +12,14 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+final _auth = FirebaseAuth.instance;
+final _firestore = FirebaseFirestore.instance;
+
 class _HomePageState extends State<HomePage> {
+  User? user = _auth.currentUser;
+
+  final storyProfile = _firestore.collection('users').doc('profileImage');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +48,14 @@ class _HomePageState extends State<HomePage> {
             ),
           )),
       drawer: XDrawer(),
-      body: Column(),
+      body: Padding(
+        padding: EdgeInsets.only(top: 10, left: 20),
+        child: Column(
+          children: [
+          
+          ],
+        ),
+      ),
     );
   }
 }

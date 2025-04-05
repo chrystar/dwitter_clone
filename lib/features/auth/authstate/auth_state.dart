@@ -1,4 +1,5 @@
 import 'package:dwitter_clone/features/screens/Login/login_screen.dart';
+import 'package:dwitter_clone/features/screens/bottom_nav/bottom_nav.dart';
 import 'package:dwitter_clone/features/screens/home_screen/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -37,7 +38,7 @@ class _AuthStateState extends State<AuthState> {
             );
           }
           if (snapshot.hasData) {
-            return HomePage();
+            return BottomNav();
           } else {
             return LoginScreen();
           }
