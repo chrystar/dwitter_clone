@@ -1,5 +1,9 @@
+import 'package:dwitter_clone/features/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:icons_plus/icons_plus.dart';
 
+import '../../../theme/app_theme.dart';
+import '../../widgets/Ddrawer.dart';
 import '../chart/chat_screen.dart';
 import '../home_screen/home_page.dart';
 import '../notification/notification_screen.dart';
@@ -18,7 +22,7 @@ List navOptions = [
   SearchScreen(),
   CreatePostScreen(),
   ChatScreen(),
-  NotificationScreen(),
+  ProfileScreen(),
 ];
 
 int selectedItem = 0;
@@ -36,10 +40,36 @@ class _BottomNavState extends State<BottomNav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: XDarkThemeColors.secondaryBackground,
+      appBar: AppBar(
+          backgroundColor: Colors.black12,
+          title: Text(
+            "Dwitt",
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: XDarkThemeColors.primaryText,
+            ),
+          ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Row(
+              children: <Widget>[
+                Icon(Icons.notifications, color: XDarkThemeColors.iconColor),
+                SizedBox(width: 10),
+                Icon(AntDesign.send_outline, color: XDarkThemeColors.iconColor,)
+              ]
+                        ),
+            ),
+        ],
+          centerTitle: true,
+         ),
       body: navOptions[selectedItem],
       bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey.shade800,
+        backgroundColor: XDarkThemeColors.primaryBackground,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey.shade400,
         currentIndex: selectedItem,
         type: BottomNavigationBarType.fixed,
         showUnselectedLabels: false,
@@ -69,8 +99,8 @@ class _BottomNavState extends State<BottomNav> {
             label: 'chat',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.notifications,),
-            label: 'notifi'
+            icon: CircleAvatar(radius: 12,),
+            label: 'account'
           ),
         ],
       ),

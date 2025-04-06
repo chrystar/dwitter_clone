@@ -53,4 +53,27 @@ class AuthProviders extends ChangeNotifier {
     await _auth.signOut();
   }
 
+  Future<void> setUserProfile(String? name, String? profileImage) async {
+    final currentUser = _auth.currentUser;
+    if (currentUser != null) {
+      final userDocRef = _fireSore.collection('users').doc(currentUser.uid);
+      final Map<String, dynamic> updateData = {};
+
+      if (name != null) {
+        updateData['name'] = name;
+      }
+      if (profileImage != null) {
+        updateData['profileImage'] = profileImage;
+      }
+
+      try {
+        await userDocRef.update(updateData);
+        notifyListeners();
+      } catch (e) {
+        print("Error updating user profile: $e");
+        // Handle the error appropriately (e.g., show a snackbar)
+      }
+    }
+  }
+
 }

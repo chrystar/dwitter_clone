@@ -1,7 +1,11 @@
 import 'dart:io';
 
+import 'package:dwitter_clone/providers/post_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+
+import '../../../theme/app_theme.dart';
 
 class CreatePostScreen extends StatefulWidget {
   const CreatePostScreen({super.key});
@@ -36,21 +40,79 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     });
   }
 
+  final TextEditingController _contentController = TextEditingController();
+  bool isLoading = false;
+  String? _errorMessage;
+
+  Future<void> _createPost() async {
+    if (_contentController.text.trim().isEmpty) {
+      setState(() {
+        _errorMessage = "Post content cannot be empty.";
+      });
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      final postProvider = Provider.of<PostProvider>(context, listen: false);
+      await postProvider.createPost(
+        _contentController.text.trim(),
+      );
+      // Optionally clear the text and image after successful post
+      setState(() {
+        _contentController.clear();
+        _selectedImage = null;
+      });
+      Navigator.pop(context); // Go back after posting
+    } catch (error) {
+      setState(() {
+        isLoading = false;
+        _errorMessage = "Failed to create post: $error";
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(_errorMessage!)),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    //final postProvider = Provider.of<PostProvider>(context, listen: false);
     return Scaffold(
+      backgroundColor: XDarkThemeColors.primaryBackground,
       appBar: AppBar(
+        backgroundColor: XDarkThemeColors.primaryBackground,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.cancel),
         ),
         actions: [
-          Container(
-            margin: EdgeInsets.only(right: 20),
-            padding: EdgeInsets.only(left: 20, right: 20, top: 8, bottom: 8),
-            decoration: BoxDecoration(
-                color: Colors.blue, borderRadius: BorderRadius.circular(20)),
-            child: Text('Post'),
+          GestureDetector(
+            onTap: () => _createPost(),
+            child: Container(
+              margin: EdgeInsets.only(right: 20),
+              padding: EdgeInsets.only(left: 20, right: 20, top: 8, bottom: 8),
+              decoration: BoxDecoration(
+                  color: _contentController.text.trim().isEmpty ? Colors.blue.shade200 : XDarkThemeColors.primaryAccent,
+                  borderRadius: BorderRadius.circular(20)),
+              child: isLoading == false
+                  ? Text(
+                      'Post',
+                      style: TextStyle(color: Colors.white),
+                    )
+                  : Center(
+                      child: CircularProgressIndicator(
+                      color: Colors.grey,
+                    )),
+            ),
           ),
         ],
       ),
@@ -58,34 +120,38 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: EdgeInsets.only(left: 20, top: 20),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CircleAvatar(),
-                SizedBox(width: 10),
-                Column(
-                  children: <Widget>[
-                    Container(
-                      padding: EdgeInsets.only(
-                          left: 10, right: 10, top: 5, bottom: 5),
-                      decoration: BoxDecoration(
-                          border: Border.all(color: Colors.blue),
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            'Everyone',
-                            style: TextStyle(color: Colors.blue),
-                          ),
-                          Icon(Icons.keyboard_arrow_down_rounded),
-                        ],
+          SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.only(left: 20, top: 20),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(),
+                  SizedBox(width: 10),
+                  Column(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.only(
+                            left: 10, right: 10, top: 5, bottom: 5),
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: XDarkThemeColors.primaryAccent),
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              'Everyone',
+                              style: TextStyle(
+                                  color: XDarkThemeColors.primaryAccent),
+                            ),
+                            Icon(Icons.keyboard_arrow_down_rounded),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           Expanded(
@@ -95,8 +161,18 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   padding: EdgeInsets.only(left: 20, right: 20),
                   child: TextFormField(
                     maxLines: null,
+                    onChanged: (value) {
+                      setState(() {
+                        _errorMessage = null; // Clear error message on typing
+                      });
+                    },
+                    controller: _contentController,
                     keyboardType: TextInputType.multiline,
                     autofocus: true,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20
+                    ),
                     decoration: InputDecoration(
                       hintText: _selectedImage != null
                           ? "Add a comment"
@@ -169,7 +245,10 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                         height: 80,
                         width: 80,
                         child: Center(
-                          child: Icon(Icons.camera_alt_outlined, color: Colors.blue.shade200,),
+                          child: Icon(
+                            Icons.camera_alt_outlined,
+                            color: Colors.blue.shade200,
+                          ),
                         ),
                       ),
                     ),
@@ -188,12 +267,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   padding: EdgeInsets.only(left: 8, bottom: 16, top: 16),
                   child: Row(
                     children: [
-                      Icon(Icons.my_location_outlined, color: Colors.blue,),
+                      Icon(
+                        Icons.my_location_outlined,
+                        color: XDarkThemeColors.primaryAccent,
+                      ),
                       SizedBox(width: 10),
                       Text(
                         'Everyone can reply',
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: XDarkThemeColors.primaryAccent,
                         ),
                       ),
                     ],
@@ -210,17 +292,17 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                     children: [
                       Icon(
                         Icons.image,
-                        color: Colors.blue,
+                        color: XDarkThemeColors.primaryAccent,
                       ),
                       SizedBox(width: 30),
                       Icon(
                         Icons.gif_box_outlined,
-                        color: Colors.blue,
+                        color: XDarkThemeColors.primaryAccent,
                       ),
                       SizedBox(width: 30),
                       Icon(
                         Icons.share,
-                        color: Colors.blue,
+                        color: XDarkThemeColors.primaryAccent,
                       ),
                     ],
                   ),

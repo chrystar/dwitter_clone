@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dwitter_clone/features/screens/profile/profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -50,7 +51,7 @@ class _XDrawerState extends State<XDrawer> {
               text: 'Profile',
               onTap: () {
                 // Handle Profile navigation
-                Navigator.pushReplacementNamed(context, '/profile');
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen()));
               }),
           _buildDrawerItem(
               icon: Icons.list_alt_outlined,
