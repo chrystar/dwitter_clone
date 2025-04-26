@@ -8,6 +8,7 @@ class PostModel {
   final DateTime timestamp;
   List<String> likes;
   List<String> comments; // List of comment IDs
+  int commentCount;
 
   PostModel({
     required this.uid,
@@ -17,6 +18,7 @@ class PostModel {
     required this.timestamp,
     this.likes = const [],
     this.comments = const [],
+    this.commentCount = 0,
   });
 
   factory PostModel.fromMap(Map<String, dynamic> map) {
@@ -28,6 +30,7 @@ class PostModel {
       timestamp: (map['timestamp'] as Timestamp).toDate(),
       likes: List<String>.from(map['likes'] ?? []),
       comments: List<String>.from(map['comments'] ?? []),
+      commentCount: map['commentCount'] != null ? map['commentCount'] as int : 0, // Handle potential null
     );
   }
 
@@ -40,6 +43,7 @@ class PostModel {
       'timestamp': Timestamp.fromDate(timestamp),
       'likes': likes,
       'comments': comments,
-    };
+      'commentCount': commentCount,
+     };
   }
 }

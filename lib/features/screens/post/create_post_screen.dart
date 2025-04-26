@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dwitter_clone/providers/post_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
@@ -92,7 +93,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         backgroundColor: XDarkThemeColors.primaryBackground,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.cancel),
+          icon: Icon(Icons.cancel_outlined, color: XDarkThemeColors.iconColor,),
         ),
         actions: [
           GestureDetector(
@@ -120,38 +121,36 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SingleChildScrollView(
-            child: Container(
-              padding: EdgeInsets.only(left: 20, top: 20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(),
-                  SizedBox(width: 10),
-                  Column(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.only(
-                            left: 10, right: 10, top: 5, bottom: 5),
-                        decoration: BoxDecoration(
-                            border:
-                                Border.all(color: XDarkThemeColors.primaryAccent),
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Row(
-                          children: <Widget>[
-                            Text(
-                              'Everyone',
-                              style: TextStyle(
-                                  color: XDarkThemeColors.primaryAccent),
-                            ),
-                            Icon(Icons.keyboard_arrow_down_rounded),
-                          ],
-                        ),
+          Container(
+            padding: EdgeInsets.only(left: 20, top: 20),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CircleAvatar(),
+                SizedBox(width: 10),
+                Column(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(
+                          left: 10, right: 10, top: 5, bottom: 5),
+                      decoration: BoxDecoration(
+                          border:
+                              Border.all(color: XDarkThemeColors.primaryAccent),
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            'Everyone',
+                            style: TextStyle(
+                                color: XDarkThemeColors.primaryAccent),
+                          ),
+                          Icon(Icons.keyboard_arrow_down_rounded),
+                        ],
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
           Expanded(

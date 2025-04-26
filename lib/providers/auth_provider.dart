@@ -76,4 +76,5 @@ class AuthProviders extends ChangeNotifier {
     }
   }
 
+
 }
